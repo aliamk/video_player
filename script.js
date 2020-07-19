@@ -10,7 +10,7 @@ const duration = document.querySelector('.time-duration')
 const fullscreenBtn = document.querySelector('.fullscreen')
 
 
-// Play & Pause ----------------------------------- //
+// ---------------------------------- Play & Pause ----------------------------------- //
 function showPlayIcon() {
   playBtn.classList.replace('fa-pause', 'fa-play')
   playBtn.setAttribute('title', 'Play')
@@ -32,14 +32,28 @@ function togglePlay() {
 // On video end, show play button icon
 video.addEventListener('ended', showPlayIcon)
 
-// Progress Bar ---------------------------------- //
+// ---------------------------------- Progress Bar ---------------------------------- //
+
+// Calculate display time format
+function displayTime(time) {
+  const minutes = Math.floor(time / 60)
+  let seconds = Math.floor(time % 60)
+  seconds = seconds > 9 ? seconds : `0${seconds}`
+  // console.log(minutes, seconds)
+  return `${minutes}:${seconds}`
+}
+
+// Update progress bar as the video plays
 function updateProgress() {
   // console.log('currentTime', video.currentTime, 'duration', video.duration)
   progressBar.style.width = `${(video.currentTime / video.duration) * 100 }%`
+  // displayTime(64)
+  currentTime.textContent = `${displayTime(video.currentTime)} /`
+  duration.textContent = `${displayTime(video.duration)}`
 }
 
 
-// Volume Controls --------------------------- //
+// ---------------------------------- Volume Controls --------------------------- //
 
 
 
@@ -47,9 +61,9 @@ function updateProgress() {
 
 
 
-// Fullscreen ------------------------------- //
+// ---------------------------------- Fullscreen ------------------------------- //
 
-// Event Listeners
+// ---------------------------------- Event Listeners ----------------------------------
 playBtn.addEventListener('click', togglePlay)
 video.addEventListener('click', togglePlay)
 video.addEventListener('timeupdate', updateProgress)
