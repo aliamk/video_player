@@ -63,7 +63,8 @@ function setProgress(e) {
 }
 
 // ---------------------------------- Volume Controls --------------------------- //
-// Volume Bar
+let lastVolume = 1 // need this in order to enable muting... default volume level is 100%
+
 function changeVolume(e) {
   let volume = e.offsetX / volumeRange.offsetWidth
   // Rounding volume up or down
@@ -73,9 +74,9 @@ function changeVolume(e) {
   if (volume > 0.9) {
     volume = 1
   }
-  volumeBar.style.eidth = `${volume * 100}%`
+  volumeBar.style.width = `${volume * 100}%`
   video.volume = volume
-  console.log(volume)
+  // console.log(volume)
   // Change icon depending on volume
   volumeIcon.className = ''
   if (volume > 0.7) {
@@ -84,6 +85,24 @@ function changeVolume(e) {
     volumeIcon.classList.add('fas', 'fa-volume-down')
   } else if (volume === 0) {
     volumeIcon.classList.add('fas', 'fa-volume-off')
+  }
+  lastVolume = volume
+}
+
+// Mute/Unmute
+function toggleMute() {
+  volumeIcon.className = ''
+  if (video.volume) { // If there is volume (greater than 0)
+    lastVolume = video.volume // store the volume level within the lastVolume variable
+    video.volume = 0 // convert the volume to 0
+    volumeBar.style.width = 0 // convert the volume bar width to 0 i.e., MUTE
+    volumeIcon.classList.add('fas', 'fa-volume-mute')
+    volumeIcon.setAttribute('title', 'Unmute')
+  } else { // if the volume started at zero
+    video.volume = lastVolume // store zero within the lastVolume variable
+    volumeBar.style.width = `${lastVolume * 100}%` // Style the volume by multiplying by 100
+    volumeIcon.classList.add('fas', 'fa-volume-up')
+    volumeIcon.setAttribute('title', 'Mute')
   }
 }
 
@@ -101,3 +120,4 @@ video.addEventListener('timeupdate', updateProgress)
 video.addEventListener('canPlay', updateProgress)
 progressRange.addEventListener('click', setProgress)
 volumeRange.addEventListener('click', changeVolume)
+volumeIcon.addEventListener('click', toggleMute)
