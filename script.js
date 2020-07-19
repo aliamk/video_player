@@ -1,3 +1,4 @@
+const player = document.querySelector('.player')
 const video = document.querySelector('video')
 const progressRange = document.querySelector('.progress-range')
 const progressBar = document.querySelector('.progress-bar')
@@ -7,6 +8,7 @@ const volumeRange = document.querySelector('.volume-range')
 const volumeBar = document.querySelector('.volume-bar')
 const currentTime = document.querySelector('.time-elapsed')
 const duration = document.querySelector('.time-duration')
+const speed = document.querySelector('.player-speed')
 const fullscreenBtn = document.querySelector('.fullscreen')
 
 
@@ -105,13 +107,53 @@ function toggleMute() {
     volumeIcon.setAttribute('title', 'Mute')
   }
 }
-
-
 // ---------------------------------- Change Playback Speed -------------------- //
-
-
-
+function changeSpeed() {
+  // console.log('video playback rate', video.playbackRate)
+  // console.log('selected value', speed.value)
+  video.playbackRate = speed.value
+}
 // ---------------------------------- Fullscreen ------------------------------- //
+
+/* View in fullscreen */
+function openFullscreen(elem) {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen()
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen()
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    elem.webkitRequestFullscreen()
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen()
+  }
+  video.classList.add('video-fullscreen')
+}
+
+/* Close fullscreen */
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen()
+  } else if (document.mozCancelFullScreen) { /* Firefox */
+    document.mozCancelFullScreen()
+  } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+    document.webkitExitFullscreen()
+  } else if (document.msExitFullscreen) { /* IE/Edge */
+    document.msExitFullscreen()
+  }
+  video.classList.remove('video-fullscreen')
+}
+
+let fullscreen = false
+
+//  Toggle Fullscreen
+function toggleFullscreen() {
+  if (!fullscreen) {
+    openFullscreen(player)
+  } else {
+    closeFullscreen()
+  }
+  fullscreen = !fullscreen
+}
 
 // ---------------------------------- Event Listeners ----------------------------------
 playBtn.addEventListener('click', togglePlay)
@@ -121,3 +163,5 @@ video.addEventListener('canPlay', updateProgress)
 progressRange.addEventListener('click', setProgress)
 volumeRange.addEventListener('click', changeVolume)
 volumeIcon.addEventListener('click', toggleMute)
+speed.addEventListener('change', changeSpeed)
+fullscreenBtn.addEventListener('click', toggleFullscreen)
