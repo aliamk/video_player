@@ -11,7 +11,6 @@ const duration = document.querySelector('.time-duration')
 const speed = document.querySelector('.player-speed')
 const fullscreenBtn = document.querySelector('.fullscreen')
 
-
 // ---------------------------------- Play & Pause ----------------------------------- //
 function showPlayIcon() {
   playBtn.classList.replace('fa-pause', 'fa-play')
